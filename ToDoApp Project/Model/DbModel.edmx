@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AppDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="SharedToDo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SharedTo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SharedBy" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ToDoId" Type="int" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsComplete" Type="bit" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="CreatorId" Type="int" Nullable="false" />
+          <Property Name="LastChanged" Type="datetime" Nullable="false" />
+          <Property Name="LastChangeUserId" Type="int" Nullable="false" />
+          <Property Name="ToDoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ToDo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="CreatorId" Type="int" Nullable="false" />
+          <Property Name="LastChanged" Type="datetime" Nullable="false" />
+          <Property Name="LastChangedUserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__SharedToD__ToDoI__02FC7413">
+          <End Role="ToDo" Type="Self.ToDo" Multiplicity="0..1" />
+          <End Role="SharedToDo" Type="Self.SharedToDo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ToDo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SharedToDo">
+              <PropertyRef Name="ToDoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Task__ToDoId__6FE99F9F">
+          <End Role="ToDo" Type="Self.ToDo" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ToDo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ToDoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ToDo__CreatorId__49C3F6B7">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ToDo" Type="Self.ToDo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ToDo">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AppDbModelStoreContainer">
+          <EntitySet Name="SharedToDo" EntityType="Self.SharedToDo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ToDo" EntityType="Self.ToDo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__SharedToD__ToDoI__02FC7413" Association="Self.FK__SharedToD__ToDoI__02FC7413">
+            <End Role="ToDo" EntitySet="ToDo" />
+            <End Role="SharedToDo" EntitySet="SharedToDo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Task__ToDoId__6FE99F9F" Association="Self.FK__Task__ToDoId__6FE99F9F">
+            <End Role="ToDo" EntitySet="ToDo" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ToDo__CreatorId__49C3F6B7" Association="Self.FK__ToDo__CreatorId__49C3F6B7">
+            <End Role="User" EntitySet="User" />
+            <End Role="ToDo" EntitySet="ToDo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AppDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ToDo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatorId" Type="Int32" Nullable="false" />
+          <Property Name="LastChanged" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastChangedUserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK__ToDo__CreatorId__49C3F6B7" FromRole="ToDo" ToRole="User" />
+          <NavigationProperty Name="Task" Relationship="AppDbModel.FK__Task__Id__5CD6CB2B" FromRole="ToDo" ToRole="Task" />
+          <NavigationProperty Name="Tasks" Relationship="AppDbModel.FK__Task__ToDoId__6FE99F9F" FromRole="ToDo" ToRole="Task" />
+          <NavigationProperty Name="SharedToDoes" Relationship="AppDbModel.FK__SharedToD__ToDoI__02FC7413" FromRole="ToDo" ToRole="SharedToDo" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ToDo" Relationship="Self.FK__ToDo__CreatorId__49C3F6B7" FromRole="User" ToRole="ToDo" />
+        </EntityType>
+        <Association Name="FK__ToDo__CreatorId__49C3F6B7">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ToDo" Type="Self.ToDo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ToDo">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AppDbModelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ToDoes" EntityType="Self.ToDo" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__ToDo__CreatorId__49C3F6B7" Association="Self.FK__ToDo__CreatorId__49C3F6B7">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ToDo" EntitySet="ToDoes" />
+          </AssociationSet>
+          <EntitySet Name="Tasks" EntityType="AppDbModel.Task" />
+          <AssociationSet Name="FK__Task__Id__5CD6CB2B" Association="AppDbModel.FK__Task__Id__5CD6CB2B">
+            <End Role="ToDo" EntitySet="ToDoes" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Task__ToDoId__6FE99F9F" Association="AppDbModel.FK__Task__ToDoId__6FE99F9F">
+            <End Role="ToDo" EntitySet="ToDoes" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <EntitySet Name="SharedToDoes" EntityType="AppDbModel.SharedToDo" />
+          <AssociationSet Name="FK__SharedToD__ToDoI__02FC7413" Association="AppDbModel.FK__SharedToD__ToDoI__02FC7413">
+            <End Role="ToDo" EntitySet="ToDoes" />
+            <End Role="SharedToDo" EntitySet="SharedToDoes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsComplete" Type="Boolean" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatorId" Type="Int32" Nullable="false" />
+          <Property Name="LastChanged" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastChangeUserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ToDo" Relationship="AppDbModel.FK__Task__Id__5CD6CB2B" FromRole="Task" ToRole="ToDo" />
+          <Property Name="ToDoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Task__Id__5CD6CB2B">
+          <End Type="AppDbModel.ToDo" Role="ToDo" Multiplicity="1" />
+          <End Type="AppDbModel.Task" Role="Task" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ToDo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Task__ToDoId__6FE99F9F">
+          <End Type="AppDbModel.ToDo" Role="ToDo" Multiplicity="1" />
+          <End Type="AppDbModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ToDo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ToDoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SharedToDo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SharedTo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SharedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ToDoId" Type="Int32" />
+          <NavigationProperty Name="ToDo" Relationship="AppDbModel.FK__SharedToD__ToDoI__02FC7413" FromRole="SharedToDo" ToRole="ToDo" />
+        </EntityType>
+        <Association Name="FK__SharedToD__ToDoI__02FC7413">
+          <End Type="AppDbModel.ToDo" Role="ToDo" Multiplicity="0..1" />
+          <End Type="AppDbModel.SharedToDo" Role="SharedToDo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ToDo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SharedToDo">
+              <PropertyRef Name="ToDoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AppDbModelStoreContainer" CdmEntityContainer="AppDbModelEntities">
+          <EntitySetMapping Name="ToDoes">
+            <EntityTypeMapping TypeName="AppDbModel.ToDo">
+              <MappingFragment StoreEntitySet="ToDo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="LastChanged" ColumnName="LastChanged" />
+                <ScalarProperty Name="LastChangedUserId" ColumnName="LastChangedUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="AppDbModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="AppDbModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="ToDoId" ColumnName="ToDoId" />
+                <ScalarProperty Name="LastChangeUserId" ColumnName="LastChangeUserId" />
+                <ScalarProperty Name="LastChanged" ColumnName="LastChanged" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsComplete" ColumnName="IsComplete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SharedToDoes">
+            <EntityTypeMapping TypeName="AppDbModel.SharedToDo">
+              <MappingFragment StoreEntitySet="SharedToDo">
+                <ScalarProperty Name="ToDoId" ColumnName="ToDoId" />
+                <ScalarProperty Name="SharedBy" ColumnName="SharedBy" />
+                <ScalarProperty Name="SharedTo" ColumnName="SharedTo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
